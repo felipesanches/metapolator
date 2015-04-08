@@ -13,6 +13,7 @@ module.exports = {
       , 'angular': 'bower_components/angular/angular'
       , 'obtain': 'obtainJS/lib'
       , 'ufojs': 'ufoJS/lib'
+      , 'jsziptools': 'jsziptools/src/jsziptools'
       , 'yaml': 'bower_components/js-yaml/dist/js-yaml.min'
       , 'es6/Reflect': 'bower_components/harmony-reflect/reflect'
       , 'codemirror': 'bower_components/codemirror'
@@ -22,6 +23,15 @@ module.exports = {
   , shim: {
         angular: {
             exports: 'angular'
+        },
+        jsziptools: {
+            exports: 'jz'
+        },
+        init: function() {
+            return {
+                'zip': jz.zip,
+                'zip.unpack': jz.zip.unpack
+            };
         }
     }
 };

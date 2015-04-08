@@ -4,3 +4,6 @@
 [submodule "app/lib/obtainJS"]
 	path = app/lib/obtainJS
 	url = https://github.com/graphicore/obtainJS.git
+[submodule "app/lib/jsziptools"]
+	path = app/lib/jsziptools
+	url = https://github.com/ukyo/jsziptools.git

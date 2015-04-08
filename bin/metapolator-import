@@ -19,12 +19,14 @@ if (require.main === module) {
       , 'metapolator/errors'
       , 'metapolator/parseArgs'
       , 'ufojs/tools/io/staticNodeJS'
+      , 'jsziptools'
       , 'metapolator/project/MetapolatorProject'
     ], function (
         program
       , errors
       , parseArgs
       , io
+      , jz
       , MetapolatorProject
     ) {
         var CommandLineError = errors.CommandLine;
@@ -33,6 +35,21 @@ if (require.main === module) {
         program.arguments(exports.command.arguments)
         .description(exports.command.description)
         .action(function(sourceUFO, targetMaster) {
+
+            if (sourceUFO.slice(-4) == '.zip'){
+                buf = io.readFile(sourceUFO);
+//                throw new CommandLineError('It is a ZIP UFO! ' + sourceUFO);
+
+                    jz.zip.unpack({buffer: buf}).then(function(reader){
+                    files = reader.getFileNames();
+                    throw new CommandLineError('Got a buffer !!! ' + buf);
+                    for (f in files){
+                        blob = reader.readFileAsBlob(files[f]);
+                        io.write(files[f], blob);
+                    }
+                });
+            }
+
             var pm = parseArgs.projectMaster(io, targetMaster);
             var project = pm[0];
             targetMaster = pm[1];
