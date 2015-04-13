@@ -37,7 +37,19 @@ if (require.main === module) {
             var project = pm[0];
             targetMaster = pm[1];
             project.load();
-            project.import(targetMaster, sourceUFO, program.glyphs);
+
+            String.prototype.endsWith = function(suffix) {
+                return this.indexOf(suffix, this.length - suffix.length) !== -1;
+            };
+
+            if (sourceUFO.endsWith(".zip")){
+                var ufoPath = sourceUFO.split(".zip")[0];
+                var ufoZipdata = new Buffer(io.readFile(sourceUFO)).toString('base64');
+
+                project.importZip(ufoZipdata, targetMaster, ufoPath, program.glyphs);
+            } else {
+                project.import(targetMaster, sourceUFO, program.glyphs);
+            }
         })
         .option('-g, --glyphs <glyphs>', 'A comma-separated of glyph names to import',
             function(value) {

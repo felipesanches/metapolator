@@ -584,7 +584,7 @@ module.exports = function(data, options) {
             createFolders: options.createFolders
         });
     }
-    if (zipEntries.zipComment.length) {
+    if (zipEntries.zipComment && zipEntries.zipComment.length) {
         this.comment = zipEntries.zipComment;
     }
 

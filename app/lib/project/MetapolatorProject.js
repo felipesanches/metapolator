@@ -512,6 +512,11 @@ define([
         this._importFontInfoFile(sourceUFODir, false);
     };
 
+    _p.importZip = function(ufoZipdata, masterName, sourceUFODir, glyphs) {
+        zip.unpack(ufoZipdata, this._io, sourceUFODir);
+//        this.import(masterName, sourceUFODir, glyphs);
+    };
+
     /**
      * If there is no 'targetFile' in the project but the import
      * has one, we do the import.

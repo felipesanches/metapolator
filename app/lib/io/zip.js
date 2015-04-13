@@ -8,7 +8,37 @@ define([
     "use strict";
 
     var unpack = function(zipData, io, targetPath){
-        /* TODO: Implement-me! */
+        var zip = new JSZip();
+        zip.load(zipData, {base64: true});
+        var files = zip.files;
+        var i;
+
+        for (i in files){
+            var file = files[i];
+            var absolute_path = [targetPath, file.name].join(targetPath.split()[-1]=="/" ? "" : "/");
+            if (!file.dir){
+                io.writeFile(false, absolute_path, file.asBinary());
+            }
+        }
+
+/*
+        function unpackZipRecursive(entry){
+            var files = entry.folder(//);
+            var i;
+
+            for (i in files){
+                var file = files[i];
+                var absolute_path = [targetPath, file.name].join(targetPath.split()[-1]=="/" ? "" : "/");
+                if (file.dir){
+                    readZipRecursive(file);
+                } else {
+                    io.writeFile(false, absolute_path, file.asBinary());
+                }
+            }
+        }
+
+        unpackZipRecursive(zip);
+*/
     };
 
     var encode = function(io, sourcePath){
