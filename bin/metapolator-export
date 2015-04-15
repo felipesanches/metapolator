@@ -51,7 +51,7 @@ if (require.main === module) {
                 if (instance.slice(-4) === '.zip'){
                     project.exportZipInstance(master, instance, program.precision);
                 } else {
-                    project.exportInstance(master, instance, program.precision);
+                    project.exportInstance(project._io, master, instance, program.precision);
                 }
                 if(!masterInstancePairs.length) break;
             }

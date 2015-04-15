@@ -586,7 +586,7 @@ define([
                                this.fontinfoFileName, this.fontinfoFile );
     };
 
-    _p.exportInstance = function(masterName, instanceName, precision) {
+    _p.exportInstance = function(io, masterName, instanceName, precision) {
         // returns a models/Controller
         var model = this.open(masterName)
           , master = model.query('master#' + masterName)
@@ -596,18 +596,18 @@ define([
           ;
 
         // create a bare ufoV2 directory
-        this._io.mkDir(false, dirName);
+        io.mkDir(false, dirName);
 
         // create dirName/metainfo.plist
-        this._io.writeFile(false, dirName+'/metainfo.plist'
+        io.writeFile(false, dirName+'/metainfo.plist'
                                 , plistLib.createPlistString(metainfoV2));
 
         // fontforge requires a fontinfo.plist that defines unitsPerEm
-        this._io.writeFile(false, dirName+'/fontinfo.plist'
+        io.writeFile(false, dirName+'/fontinfo.plist'
                                 , plistLib.createPlistString(minimalFontinfo));
 
-        this._io.mkDir(false, dirName+'/glyphs');
-        this._io.writeFile(false, dirName+'/glyphs/contents.plist', plistLib.createPlistString({}));
+        io.mkDir(false, dirName+'/glyphs');
+        io.writeFile(false, dirName+'/glyphs/contents.plist', plistLib.createPlistString({}));
 
         glyphSet = this.getNewGlyphSet(
                                 false, dirName +'/glyphs', undefined, 2);
@@ -617,37 +617,15 @@ define([
     };
 
     _p.exportZipInstance = function(masterName, instanceName, precision) {
-        //export the font to a temporary directory
-        var temp_dir = instanceName+"_temp";
-        this.exportInstance(masterName, temp_dir, precision);
+        //export the font to a temporary InMemory directory tree
+        var mem_io = new InMemory()
+          , temp_dir = instanceName
+          ;
+        this.exportInstance(mem_io, masterName, temp_dir, precision);
 
         //encode it as a zip file
-        var content = zipUtil.encode(false, this._io, temp_dir);
+        var content = zipUtil.encode(false, mem_io, temp_dir);
         this._io.writeFile(false, instanceName, new Buffer(content, 'base64'));
-
-        //delete the temp dir
-        function rmDirRecursive(io, dir){
-            function _isDirName(name) {
-                return name.slice(-1) === '/';
-            }
-
-            var entries = io.readDir(false, dir),
-                i, l
-                ;
-            for (i=0, l=entries.length; i<l; i++){
-                var entry = entries[i],
-                    fullPath = [dir, entry].join(dir.slice(-1) === '/' ? '' : '/')
-                    ;
-                if (_isDirName(fullPath)){
-                    rmDirRecursive(io, fullPath);
-                } else {
-                    io.unlink(false, fullPath);
-                }
-            }
-            io.rmDir(false, dir);
-        }
-
-        rmDirRecursive(this._io, temp_dir);
     };
 
     _p._getGlyphClassesReverseLookup = function() {
