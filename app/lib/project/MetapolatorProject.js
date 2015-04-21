@@ -627,7 +627,7 @@ define([
     };
 
     _p.getZippedInstance = function(masterName, instanceName, precision, dataType) {
-        var temp_dir = instanceName+"_temp"
+        var temp_dir = masterName + "_" + instanceName + ".ufo"
           , mem_io = new InMemory()
           ;
 
