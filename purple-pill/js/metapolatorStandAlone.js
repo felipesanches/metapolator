@@ -36091,10 +36091,9 @@ define('io/zipUtil',[
             ;
         for (i=0; i<files.length; i++){
             var file = files[i],
-                relative_path = file.split(sourcePath)[1],
                 data = io.readFile(false, file)
                 ;
-            zip.file(relative_path, data, {binary:true});
+            zip.file(sourcePath, data, {binary:true});
         }
 
         return zip.generate({type:dataType});
@@ -37528,7 +37527,7 @@ define('metapolator/project/MetapolatorProject',[
     };
 
     _p.getZippedInstance = function(masterName, instanceName, precision, dataType) {
-        var temp_dir = instanceName+"_temp"
+        var temp_dir = masterName + "_" + instanceName+".ufo"
           , mem_io = new InMemory()
           ;
 
