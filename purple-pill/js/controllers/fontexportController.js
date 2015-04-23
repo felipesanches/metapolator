@@ -19,25 +19,29 @@ app.controller('fontexportController', function($scope, $http, sharedScope) {
         $scope.data.localmenu.fonts = false;
     };
 
+    function zero_padding(value){
+        return value < 10 ? "0" + String(value) : String(value);
+    }
+
+    function get_timestamp(){
+        var year, month, day, hours, minutes, seconds
+          , date = new Date()
+          ;
+        year = zero_padding(date.getUTCFullYear());
+        month = zero_padding(date.getUTCMonth());
+        day = zero_padding(date.getUTCDate());
+        hours = zero_padding(date.getUTCHours());
+        minutes = zero_padding(date.getUTCMinutes());
+        seconds = zero_padding(date.getUTCSeconds());
+
+        return [year, month, day].join("") + "-" + [hours, minutes, seconds].join("");
+    }
+
+    window.setInterval(function(){
+        console.warn("timestamp: "+get_timestamp());
+    }, 1000);
+
     $scope.data.exportFonts = function() {
-
-        function zero_padding(value){
-            return value < 10 ? "0" + String(value) : String(value);
-        }
-
-        function get_timestamp(){
-            var year, month, day, hours, minutes, seconds
-              , date = new Date()
-              ;
-            year = zero_padding(date.getUTCFullYear());
-            month = zero_padding(date.getUTCMonth());
-            day = zero_padding(date.getUTCDate());
-            hours = zero_padding(date.getUTCHours());
-            minutes = zero_padding(date.getUTCMinutes());
-            seconds = zero_padding(date.getUTCSeconds());
-
-            return [year, month, day].join("") + "-" + [hours, minutes, seconds].join("");
-        }
 
         var bundle = new $scope.data.stateless.JSZip()
           , bundleFolderName = "metapolator-export-" + get_timestamp()
