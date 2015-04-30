@@ -158,11 +158,11 @@ function($scope, $http, sharedScope, ngProgress, $timeout) {
                   ;
                 // TODO model.getComputedStyle(glyph) basically does nothing, so @graphicore will make this actually do something
                 model.getComputedStyle(glyph);
-                text = total_glyphs + " glyphs in " + total_instances + " instances to export, calculating glyph #" + current_glyph;
+                text = total_glyphs + " glyphs in " + total_instances + " instance" + (total_instances==1 ? "":"s") + " to export, calculating glyph #" + current_glyph;
                 setProgress(CPS_phase_percentage * (current_glyph+1) / total_glyphs, text);
                 $timeout(exportFont_compute_CPS_chunk, UI_UPDATE_TIMESLICE);
             } else {
-                text = total_instances + " instances to export in .ufo.zip format, zipping instance #" + (current_instance+1) + " (can take a while)";
+                text = "There " + (total_instances==1 ? "is ":"are ") + total_instances + " instance" + (total_instances==1 ? "":"s") + " to export in .ufo.zip format. Zipping instance #" + (current_instance+1) + " (can take a while)";
                 setProgress(CPS_phase_percentage, text);
                 $timeout(exportFont_pack_instance_chunk, UI_UPDATE_TIMESLICE);
             }
