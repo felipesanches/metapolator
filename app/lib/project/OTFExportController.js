@@ -24,6 +24,20 @@ define([
     }
     var _p = OTFExportController.prototype;
 
+    //FIX-ME: This module does not seem to be
+    //the ideal place for this helper function:
+    function getGlyphByName(name){
+        var i, l
+          , glyphs = this._master.children
+          ;
+        //FIX-ME: It would be important to cache this search
+        // for performance improvement reasons:
+        for (i=0, l=glyphs.length; i<l; i++){
+            if (glyphs[i].id == name)
+                return glyphs[i];
+        }
+    }
+
     _p.do_export = function() {
         var glyphs = this._master.children
           , glyph
@@ -39,9 +53,11 @@ define([
             }
           ;
 
+        var drawCallback = glyphBasics.drawGlyphToPointPen.bind ( renderer, model );
+
         console.warn('exporting OTF ...');
         for(i = 0,l=glyphs.length;i<l;i++) {
-            var otPen = new OpenTypePen()
+            var otPen = new OpenTypePen(getGlyphByName, drawCallback)
               , pen = new PointToSegmentPen(otPen)
               ;
 

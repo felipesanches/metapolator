@@ -17,7 +17,10 @@ define(
     "use strict";
 
     /*constructor*/
-    function OpenTypePen () {
+    function OpenTypePen (getGlyphByName, drawCallback) {
+        Parent.call(this, undefined);
+        this.getGlyphByName = getGlyphByName;
+        this.drawCallback = drawCallback;
         this.path = new opentype.Path();
     };
 
@@ -36,6 +39,15 @@ define(
     _p._curveToOne = function(pt1, pt2, pt3) {
         this.path.curveTo(pt1[0], pt1[1], pt2[0], pt2[1], pt3[0], pt3[1]);
     };
+
+    _p.addComponent: function(glyphName, transformation, kwargs /*optional, object*/)
+    {
+        var glyph = this.getGlyphByName(glyphName);
+        if(glyph !== undefined) {
+            var tPen = new TransformPen(this, transformation);
+            this.drawCallback(glyph, tPen);
+        }
+    },
 
     _p.getPath = function(){
        return this.path;
