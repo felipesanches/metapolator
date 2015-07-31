@@ -20,6 +20,8 @@ npmConvert = [
     ,'util'
     ,'util/support'
     ,'inherits'
+    ,'fontkit'
+    ,'fontkit/src'
 ];
 for(; i<npmConvert.length;i++) {
     module = npmConvert[i];

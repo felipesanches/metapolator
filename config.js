@@ -18,6 +18,7 @@ module.exports = {
       , 'codemirror': 'bower_components/codemirror'
       , 'jszip': 'bower_components/jszip/dist/jszip'
       , 'opentype': 'bower_components/opentype.js/dist/opentype'
+      , 'fontkit':  'npm_converted/fontkit/src'
       , 'ui-codemirror': 'bower_components/angular-ui-codemirror/ui-codemirror'
       , 'EventEmitter': 'bower_components/event-emitter.js/dist/event-emitter'
     }
