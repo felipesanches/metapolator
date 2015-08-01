@@ -4,7 +4,7 @@ define([
   , 'metapolator/rendering/OpenTypePen'
   , 'ufojs/tools/pens/PointToSegmentPen'
   , 'ufojs/tools/pens/BoundsPen'
-  , 'opentype'
+  , 'fontkit'
   , 'metapolator/models/MOM/Glyph'
   , 'metapolator/timer'
 ], function(
@@ -13,7 +13,7 @@ define([
   , OpenTypePen
   , PointToSegmentPen
   , BoundsPen
-  , opentype
+  , fontkit
   , MOMGlyph
   , timer
 ) {
@@ -117,6 +117,8 @@ define([
             var bbox = bPen.getBounds();
             if (bbox == undefined)
                 bbox = [0,0,0,0];
+/* TODO: Implement Glyph encoding into fontkit library and use it here.
+         The code below is the way it is done with OpenType.js:
 
             otf_glyphs.push(new opentype.Glyph({
                name: glyph.id,
@@ -128,12 +130,16 @@ define([
                advanceWidth: updatedUFOData['width'] || 0,
                path: otPen.getPath()
             }));
+*/
 
             one = timer.now() - time;
             total += one;
             console.warn('exported', glyph.id, 'this took', one,'ms');
             yield {'current_glyph':i, 'total_glyphs':l, 'glyph_id':glyph.id};
         }
+/* TODO: Create a font object with fontkit here
+         The code below is the way it is done with OpenType.js:
+
         font = new opentype.Font({
             familyName: master.fontinfo.familyName
                      || this._masterName || master.id,
@@ -141,12 +147,13 @@ define([
             unitsPerEm: master.fontinfo.unitsPerEm || 1000,
             glyphs: otf_glyphs
         });
+*/
 
         console.warn('finished ', i, 'glyphs in', total
             , 'ms\n\tthat\'s', total/i, 'per glyph\n\t   and'
             , (1000 * i / total)  ,' glyphs per second.'
         );
-        this._io.writeFile(false, this._targetName, font.toBuffer());
+//TODO: something like this:        this._io.writeFile(false, this._targetName, font.toBuffer());
     };
 
     _p.doExport = function() {
