@@ -465,7 +465,7 @@ define([
   , 'metapolator/rendering/OpenTypePen'
   , 'ufojs/tools/pens/PointToSegmentPen'
   , 'ufojs/tools/pens/BoundsPen'
-  , 'opentype'
+  , 'fontkit'
   , 'metapolator/models/MOM/Glyph'
   , 'metapolator/timer'
 ], function(
@@ -474,7 +474,7 @@ define([
   , OpenTypePen
   , PointToSegmentPen
   , BoundsPen
-  , opentype
+  , fontkit
   , MOMGlyph
   , timer
 ) {
@@ -538,7 +538,7 @@ define([
                 i=0, l=glyphs.length;
             case 4:
                 if (!(i < l)) {
-                    context$2$0.next = 40;
+                    context$2$0.next = 39;
                     break;
                 }
 
@@ -584,42 +584,49 @@ define([
                 bbox = bPen.getBounds();
                 if (bbox == undefined)
                     bbox = [0,0,0,0];
+                /* TODO: Implement Glyph encoding into fontkit library and use it here.
+                         The code below is the way it is done with OpenType.js:
 
-                otf_glyphs.push(new opentype.Glyph({
-                   name: glyph.id,
-                   unicode: glyph._ufoData.unicodes,
-                   xMin: bbox[0],
-                   yMin: bbox[1],
-                   xMax: bbox[2],
-                   yMax: bbox[3],
-                   advanceWidth: updatedUFOData['width'] || 0,
-                   path: otPen.getPath()
-                }));
+                            otf_glyphs.push(new opentype.Glyph({
+                               name: glyph.id,
+                               unicode: glyph._ufoData.unicodes,
+                               xMin: bbox[0],
+                               yMin: bbox[1],
+                               xMax: bbox[2],
+                               yMax: bbox[3],
+                               advanceWidth: updatedUFOData['width'] || 0,
+                               path: otPen.getPath()
+                            }));
+                */
 
                 one = timer.now() - time;
                 total += one;
                 console.warn('exported', glyph.id, 'this took', one,'ms');
-                context$2$0.next = 37;
+                context$2$0.next = 36;
                 return {'current_glyph':i, 'total_glyphs':l, 'glyph_id':glyph.id};
-            case 37:
+            case 36:
                 i++;
                 context$2$0.next = 4;
                 break;
-            case 40:
-                font = new opentype.Font({
-                    familyName: master.fontinfo.familyName
-                             || this._masterName || master.id,
-                    styleName: master.fontinfo.styleName,
-                    unitsPerEm: master.fontinfo.unitsPerEm || 1000,
-                    glyphs: otf_glyphs
-                });
+            case 39:
+                /* TODO: Create a font object with fontkit here
+                         The code below is the way it is done with OpenType.js:
 
+                        font = new opentype.Font({
+                            familyName: master.fontinfo.familyName
+                                     || this._masterName || master.id,
+                            styleName: master.fontinfo.styleName,
+                            unitsPerEm: master.fontinfo.unitsPerEm || 1000,
+                            glyphs: otf_glyphs
+                        });
+                */
+
+                //TODO: something like this:        this._io.writeFile(false, this._targetName, font.toBuffer());
                 console.warn('finished ', i, 'glyphs in', total
                     , 'ms\n\tthat\'s', total/i, 'per glyph\n\t   and'
                     , (1000 * i / total)  ,' glyphs per second.'
                 );
-                this._io.writeFile(false, this._targetName, font.toBuffer());
-            case 43:
+            case 40:
             case "end":
                 return context$2$0.stop();
             }
