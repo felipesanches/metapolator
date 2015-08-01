@@ -22,6 +22,7 @@ npmConvert = [
     ,'inherits'
     ,'fontkit'
     ,'fontkit/src'
+    ,'fontkit/src/tables'
 ];
 for(; i<npmConvert.length;i++) {
     module = npmConvert[i];
