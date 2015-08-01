@@ -23,6 +23,7 @@ npmConvert = [
     ,'fontkit'
     ,'fontkit/src'
     ,'fontkit/src/tables'
+    ,'fontkit/src/subset'
 ];
 for(; i<npmConvert.length;i++) {
     module = npmConvert[i];
