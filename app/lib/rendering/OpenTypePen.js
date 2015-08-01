@@ -7,11 +7,11 @@
  */
 define(
     [
-        'opentype'
+        'fontkit'
       , 'ufojs/tools/pens/BasePen'
     ],
     function(
-        opentype
+        fontkit
       , Parent
 ) {
     "use strict";
@@ -19,7 +19,7 @@ define(
     /*constructor*/
     function OpenTypePen (glyphSet) {
         Parent.call(this, glyphSet);
-        this.path = new opentype.Path();
+        this.path = new fontkit.Path();
     };
 
     /*inheritance*/

@@ -23,10 +23,10 @@ requirejs.config({
       , 'jszip': 'bower_components/jszip/dist/jszip'
       , 'filesaver': 'bower_components/file-saver.js/FileSaver'
       , 'jquery': 'bower_components/jquery/dist/jquery.min'
-      , 'opentype': 'bower_components/opentype.js/dist/opentype.min'
       , 'd3': 'bower_components/d3/d3.min'
       , 'jquery-ui': 'bower_components/jquery.ui/jquery-ui.min'
       , 'sortable': 'bower_components/angular-ui-sortable/sortable.min'
+      , 'fontkit': 'npm_converted/fontkit/lib'
     }
   // exclude on build
   , excludeShallow: [
